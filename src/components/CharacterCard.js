@@ -17,16 +17,16 @@ const Card = styled.div `
         padding: 2% 0;
     `;
 
-    const CardImg = styled.img `
-        border-radius: 20px;
-        width: 80%;
-        height: auto;
-    `;
+    // const CardImg = styled.img `
+    //     border-radius: 20px;
+    //     width: 80%;
+    //     height: auto;
+    // `;
 
-export default function CharacterCard(props) {
+export default function CharacterCard({character}) {
 return(
     <Card>
-      <CardName>{props.character.name}</CardName>
+      <CardName>{character.name}</CardName>
     </Card>
 ) 
 }
