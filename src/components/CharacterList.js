@@ -1,16 +1,46 @@
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
+import SearchForm from './SearchForm'
+import CharacterCard from './CharacterCard';
+import axios from 'axios';
 
 export default function CharacterList() {
-  // TODO: Add useState to track data from useEffect
+  const [data, setData] = useState([]);
+
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
-    // TODO: Add API Request here - must run in `useEffect`
-    //  Important: verify the 2nd `useEffect` parameter: the dependancies array!
-  }, []);
+    axios.get(`https://cors-anywhere.herokuapp.com/https://rickandmortyapi.com/api/character/`)
+    .then(res => {
+      console.log("axios response:", res.data.results);
+      const characters = res.data.results;
+      const results = characters.filter(character => character.name.toLowerCase().includes(search.toLowerCase()));
+        console.log('characters:', results);
+      setData(results);
+    })
+    .catch(err => {
+      console.log("no characters...", err);
+    });
+  }, [search]);
+
+  const handleSearch = e => {
+    console.log(e.target.value);
+    setSearch(e.target.value);
+  };
 
   return (
     <section className="character-list">
-      <h2>TODO: `array.map()` over your state here!</h2>
+      <Link to='/'>
+        <div>Home</div>
+      </Link>
+      <SearchForm search={search} handleSearch={handleSearch}/>
+      {data.map(character => {
+            console.log(character);
+            return(
+            <CharacterCard key={character.id} character={character}/>
+            )
+        })}
     </section>
   );
 }
+
